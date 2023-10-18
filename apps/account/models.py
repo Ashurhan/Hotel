@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser
 
 class User(AbstractUser):
     
-    avatar = models.ImageField("Аватарка" , upload_to="account/", default="account/default.png" )
+    avatar = models.ImageField("Аватарка" , upload_to="account/", default="default_avatar.png" )
     phone = models.CharField("Номер телефона", max_length=14,null=True)
     email= models.EmailField("Почта", unique=True)
 
@@ -24,7 +24,7 @@ class User(AbstractUser):
 class Comment(models.Model):
     author = models.ForeignKey(User,on_delete=models.CASCADE,null=True)
     created = models.DateTimeField(auto_now_add=True)
-    content = models.TextField("Отзыв")
+    text = models.TextField("Отзыв")
 
 
     class Meta:

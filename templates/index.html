@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
+
+{% load static %}
     <!-- Hero Section Begin -->
     <section class="hero-section">
         <div class="container">
@@ -7,7 +9,7 @@
                 <div class="col-lg-6">
                     <div class="hero-text">
                         <h1>Sona A Luxury Hotel</h1>
-                        
+                             
                         <p>Here are the best hotel booking sites, including recommendations for international
                             travel and for finding low-priced hotel rooms.</p>
                         <a href="#" class="primary-btn">Discover Now</a>
@@ -48,9 +50,9 @@
             </div>
         </div>
         <div class="hero-slider owl-carousel">
-            <div class="hs-item set-bg" data-setbg="img/hero/hero-1.jpg"></div>
-            <div class="hs-item set-bg" data-setbg="img/hero/hero-2.jpg"></div>
-            <div class="hs-item set-bg" data-setbg="img/hero/hero-3.jpg"></div>
+            <div class="hs-item set-bg" data-setbg="{% static 'img/hero/hero-1.jpg ' %}"></div>
+            <div class="hs-item set-bg" data-setbg="{% static 'img/hero/hero-2.jpg' %}"></div>
+            <div class="hs-item set-bg" data-setbg="{% static 'img/hero/hero-3.jpg' %}"></div>
         </div>
     </section>
     <!-- Hero Section End -->
@@ -77,10 +79,10 @@
                     <div class="about-pic">
                         <div class="row">
                             <div class="col-sm-6">
-                                <img src="img/about/about-1.jpg" alt="">
+                                <img src=" {% static 'img/about/about-1.jpg' %}" alt="">
                             </div>
                             <div class="col-sm-6">
-                                <img src="img/about/about-2.jpg" alt="">
+                                <img src="{% static 'img/about/about-2.jpg' %}" alt="">
                             </div>
                         </div>
                     </div>
@@ -89,7 +91,7 @@
         </div>
     </section>
     <!-- About Us Section End -->
-
+a
     <!-- Services Section End -->
     <section class="services-section spad">
         <div class="container">
@@ -160,36 +162,38 @@
         <div class="container-fluid">
             <div class="hp-room-items">
                 <div class="row">
+                    {% for room in rooms|slice:":4" %}
                     <div class="col-lg-3 col-md-6">
-                        <div class="hp-room-item set-bg" data-setbg="img/room/room-b1.jpg">
+                        <div class="hp-room-item set-bg" data-setbg="{{room.images.first.room_image.url}}">
                             <div class="hr-text">
-                                <h3>Double Room</h3>
-                                <h2>199$<span>/Pernight</span></h2>
+                                <h3>{{room.category}}</h3>
+                                <h2>{{room.price}}$<span>/Pernight</span></h2>
                                 <table>
                                     <tbody>
                                         <tr>
                                             <td class="r-o">Size:</td>
-                                            <td>30 ft</td>
+                                            <td>{{room.size}}ft</td>
                                         </tr>
                                         <tr>
                                             <td class="r-o">Capacity:</td>
-                                            <td>Max persion 5</td>
+                                            <td>{{room.persons}}</td>
                                         </tr>
                                         <tr>
                                             <td class="r-o">Bed:</td>
-                                            <td>King Beds</td>
+                                            <td>{{room.bed}}</td>
                                         </tr>
                                         <tr>
                                             <td class="r-o">Services:</td>
-                                            <td>Wifi, Television, Bathroom,...</td>
+                                            <td>{{room.services}}</td>
                                         </tr>
                                     </tbody>
                                 </table>
-                                <a href="#" class="primary-btn">More Details</a>
+                                <a href="{% url 'room_details' room.id %}" class="primary-btn">More Details</a>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-6">
+                    {% endfor %}
+                    <!-- <div class="col-lg-3 col-md-6">
                         <div class="hp-room-item set-bg" data-setbg="img/room/room-b2.jpg">
                             <div class="hr-text">
                                 <h3>Premium King Room</h3>
@@ -274,7 +278,7 @@
                                 </table>
                                 <a href="#" class="primary-btn">More Details</a>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -311,7 +315,7 @@
                                 </div>
                                 <h5> - Alexander Vasquez</h5>
                             </div>
-                            <img src="img/testimonial-logo.png" alt="">
+                            <img src="{% static 'img/testimonial-logo.png' %}" alt="">
                         </div>
                         <div class="ts-item">
                             <p>After a construction project took longer than expected, my husband, my daughter and I
@@ -350,7 +354,7 @@
             </div>
             <div class="row">
                 <div class="col-lg-4">
-                    <div class="blog-item set-bg" data-setbg="img/blog/blog-1.jpg">
+                    <div class="blog-item set-bg" data-setbg="{% static 'img/blog/blog-1.jpg' %}">
                         <div class="bi-text">
                             <span class="b-tag">Travel Trip</span>
                             <h4><a href="#">Tremblant In Canada</a></h4>
@@ -359,7 +363,7 @@
                     </div>
                 </div>
                 <div class="col-lg-4">
-                    <div class="blog-item set-bg" data-setbg="img/blog/blog-2.jpg">
+                    <div class="blog-item set-bg" data-setbg="{% static 'img/blog/blog-2.jpg' %}">
                         <div class="bi-text">
                             <span class="b-tag">Camping</span>
                             <h4><a href="#">Choosing A Static Caravan</a></h4>
@@ -368,7 +372,7 @@
                     </div>
                 </div>
                 <div class="col-lg-4">
-                    <div class="blog-item set-bg" data-setbg="img/blog/blog-3.jpg">
+                    <div class="blog-item set-bg" data-setbg=" {% static 'img/blog/blog-3.jpg' %}">
                         <div class="bi-text">
                             <span class="b-tag">Event</span>
                             <h4><a href="#">Copper Canyon</a></h4>
@@ -377,7 +381,7 @@
                     </div>
                 </div>
                 <div class="col-lg-8">
-                    <div class="blog-item small-size set-bg" data-setbg="img/blog/blog-wide.jpg">
+                    <div class="blog-item small-size set-bg" data-setbg="{% static 'img/blog/blog-wide.jpg' %}">
                         <div class="bi-text">
                             <span class="b-tag">Event</span>
                             <h4><a href="#">Trip To Iqaluit In Nunavut A Canadian Arctic City</a></h4>
@@ -386,7 +390,7 @@
                     </div>
                 </div>
                 <div class="col-lg-4">
-                    <div class="blog-item small-size set-bg" data-setbg="img/blog/blog-10.jpg">
+                    <div class="blog-item small-size set-bg" data-setbg="{% static 'img/blog/blog-10.jpg' %}">
                         <div class="bi-text">
                             <span class="b-tag">Travel</span>
                             <h4><a href="#">Traveling To Barcelona</a></h4>
