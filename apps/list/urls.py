@@ -6,8 +6,8 @@ from .views import (
     all_rooms,
     about_us,
     contact,
-    blog,
-    blog_details
+    booking_index,
+    write_comments
 )
 
 
@@ -17,8 +17,8 @@ urlpatterns=[
     path("all_rooms/",all_rooms, name="all_rooms"),
     path("about_us", about_us, name="about_us"),
     path("contact/", contact, name="contact"),
-    path("blog/", blog, name="blog"),
-    path("blog_details", blog_details, name="blog_details")
+    path("booking",booking_index,name="booking"),
+    path("comment/write/", write_comments, name="comment_create")
 ]
 
 

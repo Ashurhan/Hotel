@@ -22,7 +22,10 @@ class Category(models.Model):
 
     def __str__(self):
         return  f"{self.name}"
-        
+
+
+
+
 class Rooms(models.Model):
     AVAILABLE = "available"
     OCCUPIED = "occupied"
@@ -50,7 +53,6 @@ class Rooms(models.Model):
     
     def __str__(self):
         return f" {self.id}-{self.category}"
-    
     
 
 class RoomIMage(models.Model):

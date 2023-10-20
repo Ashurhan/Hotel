@@ -54,3 +54,11 @@ class LoginForm(forms.ModelForm):
         
         return data
 
+
+class UserBaseForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = (
+            "username",
+            "avatar",
+        )

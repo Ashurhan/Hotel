@@ -12,37 +12,55 @@
                              
                         <p>Here are the best hotel booking sites, including recommendations for international
                             travel and for finding low-priced hotel rooms.</p>
-                        <a href="#" class="primary-btn">Discover Now</a>
+                        <a href="{% url 'about_us' %}" class="primary-btn">Discover Now</a>
                     </div>
                 </div>
                 <div class="col-xl-4 col-lg-5 offset-xl-2 offset-lg-1">
                     <div class="booking-form">
-                        <h3>Booking Your Hotel</h3>
-                        <form action="#">
+                        <h3>Your Reservation</h3>
+                        {% if messages %}
+                            {% for message in messages %}
+                            <h4>{{message}}</h4>
+                            {% endfor %}
+                        {% endif %}
+                        <form method="post">
+                            {% csrf_token %}
                             <div class="check-date">
                                 <label for="date-in">Check In:</label>
-                                <input type="text" class="date-input" id="date-in">
+                                <input type="text" class="date-input" id="date-in" name="check_in">
                                 <i class="icon_calendar"></i>
                             </div>
                             <div class="check-date">
                                 <label for="date-out">Check Out:</label>
-                                <input type="text" class="date-input" id="date-out">
+                                <input type="text" class="date-input" id="date-out" name="check_out">
                                 <i class="icon_calendar"></i>
                             </div>
                             <div class="select-option">
-                                <label for="guest">Guests:</label>
-                                <select id="guest">
-                                    <option value="">2 Adults</option>
-                                    <option value="">3 Adults</option>
+                                <label for="room">Room:</label>
+                                <select id="room" name="room">
+                                    {% for rooms in room.category.all %}
+                                        <option value="{{ rooms.id }}">{{ rooms.category }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            
+                            <div class="select-option">
+                                <label for="guest">Adults:</label>
+                                <select id="guest" name="adult">
+                                    {% for i in "123" %}
+                                    <option value="{{i}}" name="adult">{{i}} Adults</option>
+                                    {% endfor %}
                                 </select>
                             </div>
                             <div class="select-option">
-                                <label for="room">Room:</label>
-                                <select id="room">
-                                    <option value="">1 Room</option>
-                                    <option value="">2 Room</option>
+                                <label for="guest">Children:</label>
+                                <select id="guest" name="children">
+                                    {% for i in "123" %}
+                                    <option value="{{i}}" name="children">{{i}} Children</option>
+                                    {% endfor %}
                                 </select>
                             </div>
+                            {{form.check_in.errors}}
                             <button type="submit">Check Availability</button>
                         </form>
                     </div>

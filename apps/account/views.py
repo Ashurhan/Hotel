@@ -1,6 +1,6 @@
 from django.shortcuts import render , redirect
 from django.contrib.auth import authenticate, login, logout
-from .forms import RegisterForm  , LoginForm
+from .forms import RegisterForm  , LoginForm , UserBaseForm
 from .models import User
 
 def register_view(request):
@@ -36,4 +36,28 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect("login")
+
+
+
+from django.shortcuts import render, redirect
+
+def update_profile_view(request):
+    user = request.user
+
+    if request.method == "GET":
+        base_form = UserBaseForm(instance=user)
+        return render(request, "edit_profile.html", {"user": user, "base_form": base_form})
+
+    if request.method == "POST":
+        base_form = UserBaseForm(data=request.POST, instance=request.user, files=request.FILES)
+
+        if base_form.is_valid():
+            base_form.save()
+            return redirect("profile")
+        else:
+            return render(request, "edit_profile.html", {"user": user, "base_form": base_form})
+
+    # Return a default response for other cases (e.g., unsupported request method)
+    return render(request, "edit_profile.html", {"user": user, "base_form": base_form})
+
     

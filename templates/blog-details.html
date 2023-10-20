@@ -46,7 +46,7 @@
                         </div>
                         <div class="bd-pic">
                             <div class="bp-item">
-                                <img src="{% static 'img/blog/blog-details/blog-details-1.jpg' %}" alt="">
+                                <img src="{% url ''%}" alt="">
                             </div>
                             <div class="bp-item">
                                 <img src="{% static 'img/blog/blog-details/blog-details-2.jpg' %}" alt="">
@@ -55,15 +55,10 @@
                                 <img src="{% static 'img/blog/blog-details/blog-details-3.jpg' %}" alt="">
                             </div>
                         </div>
+                        {% for content in blog_details.content %}
                         <div class="bd-more-text">
                             <div class="bm-item">
-                                <h4>If you live in New York City</h4>
-                                <p>You know all about the traffic there. Getting places is often next to impossible,
-                                    even with the gazillion yellow cabs. If you’re like me you often look with envy at
-                                    those shiny limousines with their unformed drivers and wish you could sit in one.
-                                    Well, you can. New York limo service is more affordable than you think, whether it’s
-                                    for Newark airport transportation, LaGuardia airport transportation, or to drive
-                                    wherever you wish to go.</p>
+                                <p>{{content}}</p>
                             </div>
                             <div class="bm-item">
                                 <h4>Every time I hail a cab in New York City</h4>
@@ -74,6 +69,7 @@
                                     much they cost by now, going with a limo makes ever more sense.</p>
                             </div>
                         </div>
+                        {% endfor %}
                         <div class="tag-share">
                             <div class="tags">
                                 <a href="#">Travel Trip</a>
@@ -136,17 +132,11 @@
                         </div>
                         <div class="leave-comment">
                             <h4>Leave A Comment</h4>
-                            <form action="#" class="comment-form">
+                            <form action="{% url 'comment_create' %}" method="post" class="comment-form">
+                                {% csrf_token %}
                                 <div class="row">
-                                    <div class="col-lg-6">
-                                        <input type="text" placeholder="Name">
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <input type="text" placeholder="Email">
-                                    </div>
                                     <div class="col-lg-12 text-center">
-                                        <input type="text" placeholder="Website">
-                                        <textarea placeholder="Messages"></textarea>
+                                        <textarea placeholder="Messages" name="text"></textarea>
                                         <button type="submit" class="site-btn">Send Message</button>
                                     </div>
                                 </div>

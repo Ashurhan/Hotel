@@ -37,15 +37,6 @@ class ContactForm(forms.ModelForm):
             raise ValidationError("Номер телефона должен содержать только цифры.")
         return phone
 
-
-
-
-
-
-
-
-
-
 class BookingRoomForm(forms.ModelForm):
     class Meta:
         model = Booking
@@ -67,10 +58,10 @@ class BookingRoomForm(forms.ModelForm):
         return super().clean()
 
     
-class CommentForm(forms.ModelFrom):
+class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
-        fields=(
-            "text"
+        fields = (
+            "text",
         )
         
