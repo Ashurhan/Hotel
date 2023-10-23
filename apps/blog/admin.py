@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Post, PostCategory, PostImages, SiteContacts
+from .models import Post, PostCategory, PostImages, SiteContacts , CommentPost
 
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ("name",)
@@ -22,3 +22,5 @@ class PostAdmin(admin.ModelAdmin):
 admin.site.register(SiteContacts)
 admin.site.register(Post, PostAdmin)
 admin.site.register(PostCategory, CategoryAdmin)
+admin.site.register(CommentPost)
+

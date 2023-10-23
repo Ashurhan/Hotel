@@ -3,7 +3,7 @@
 {% load static %}
 
     <!-- Blog Details Hero Section Begin -->
-    <section class="blog-details-hero set-bg" data-setbg="{% static 'img/blog/blog-details/blog-details-hero.jpg' %}">
+    <section class="blog-details-hero set-bg" data-setbg="{{post.image.url}}" style="width: 100%; height: 120%;">
         <div class="container">
             <div class="row">
                 <div class="col-lg-10 offset-lg-1">
@@ -45,94 +45,54 @@
                                 travel destination list for sure!</p>
                         </div>
                         <div class="bd-pic">
+                            {% for image in post.extra_images.all %}
                             <div class="bp-item">
-                                <img src="{% url ''%}" alt="">
+                                <img src="{{image.image.url}}" alt="">
                             </div>
-                            <div class="bp-item">
-                                <img src="{% static 'img/blog/blog-details/blog-details-2.jpg' %}" alt="">
-                            </div>
-                            <div class="bp-item">
-                                <img src="{% static 'img/blog/blog-details/blog-details-3.jpg' %}" alt="">
+                            {% endfor %}
+                            <div class="bm-item">
+                                <h4>Content</h4>
+                                <p>{{post.content}} </p>
                             </div>
                         </div>
-                        {% for content in blog_details.content %}
-                        <div class="bd-more-text">
-                            <div class="bm-item">
-                                <p>{{content}}</p>
-                            </div>
-                            <div class="bm-item">
-                                <h4>Every time I hail a cab in New York City</h4>
-                                <p>I hope I’ll be lucky enough to get one that’s halfway decent and that the driver
-                                    actually speaks English. I have spent many anxious moments wondering if I ever get
-                                    to my destination. Or whether I’d get ripped off. Even if all goes well, I can’t say
-                                    I can remember many rides in New York cabs that were very pleasant. And given how
-                                    much they cost by now, going with a limo makes ever more sense.</p>
-                            </div>
-                        </div>
-                        {% endfor %}
                         <div class="tag-share">
+                            {% for category in post.category.all %}
                             <div class="tags">
-                                <a href="#">Travel Trip</a>
-                                <a href="#">Camping</a>
-                                <a href="#">Event</a>
+                                <a href="#">{{category}}</a>
+
                             </div>
+                            {% endfor %}
                             <div class="social-share">
                                 <span>Share:</span>
-                                <a href="#"><i class="fa fa-facebook"></i></a>
-                                <a href="#"><i class="fa fa-twitter"></i></a>
-                                <a href="#"><i class="fa fa-tripadvisor"></i></a>
-                                <a href="#"><i class="fa fa-instagram"></i></a>
-                                <a href="#"><i class="fa fa-youtube-play"></i></a>
+                                <a href="{{site_contacts.facebook_link}}"><i class="fa fa-facebook"></i></a>
+                                <a href="{{site_contacts.twiter_link}}"><i class="fa fa-twitter"></i></a>
+                                <a href="{{site_contacts.instagram_link}}"><i class="fa fa-instagram"></i></a>
+                                <a href="{{site_contacts.youtube_link}}"><i class="fa fa-youtube-play"></i></a>
                             </div>
                         </div>
                         <div class="comment-option">
-                            <h4>2 Comments</h4>
-                            <div class="single-comment-item first-comment">
-                                <div class="sc-author">
-                                    <img src="{% static 'img/blog/blog-details/avatar/avatar-1.jpg' %}" alt="">
-                                </div>
-                                <div class="sc-text">
-                                    <span>27 Aug 2019</span>
-                                    <h5>Brandon Kelley</h5>
-                                    <p>Neque porro qui squam est, qui dolorem ipsum quia dolor sit amet, consectetur,
-                                        adipisci velit, sed quia non numquam eius modi tempora. incidunt ut labore et
-                                        dolore magnam.</p>
-                                    <a href="#" class="comment-btn">Like</a>
-                                    <a href="#" class="comment-btn">Reply</a>
-                                </div>
-                            </div>
-                            <div class="single-comment-item reply-comment">
-                                <div class="sc-author">
-                                    <img src="{% static 'img/blog/blog-details/avatar/avatar-2.jpg' %}" alt="">
-                                </div>
-                                <div class="sc-text">
-                                    <span>27 Aug 2019</span>
-                                    <h5>Brandon Kelley</h5>
-                                    <p>Neque porro qui squam est, qui dolorem ipsum quia dolor sit amet, consectetur,
-                                        adipisci velit, sed quia non numquam eius modi tempora. incidunt ut labore et
-                                        dolore magnam.</p>
-                                    <a href="#" class="comment-btn like-btn">Like</a>
-                                    <a href="#" class="comment-btn reply-btn">Reply</a>
-                                </div>
-                            </div>
+                            <h4>{{post.comments.count}} Comments</h4>
+                           
+
+                            {% for comment in post.comments.all %}
                             <div class="single-comment-item second-comment ">
                                 <div class="sc-author">
-                                    <img src="{% static 'img/blog/blog-details/avatar/avatar-3.jpg' %}" alt="">
+                                    <img src="{{coment.author.avatar.url}}" alt="">
                                 </div>
                                 <div class="sc-text">
-                                    <span>27 Aug 2019</span>
-                                    <h5>Brandon Kelley</h5>
-                                    <p>Neque porro qui squam est, qui dolorem ipsum quia dolor sit amet, consectetur,
-                                        adipisci velit, sed quia non numquam eius modi tempora. incidunt ut labore et
-                                        dolore magnam.</p>
+                                    <span>{{comment.created}}</span>
+                                    <h5>{{comment.author}}</h5>
+                                    <p>{{comment.text}}</p>
                                     <a href="#" class="comment-btn">Like</a>
                                     <a href="#" class="comment-btn">Reply</a>
                                 </div>
                             </div>
+                            {% endfor %}
+
                         </div>
                         <div class="leave-comment">
                             <h4>Leave A Comment</h4>
-                            <form action="{% url 'comment_create' %}" method="post" class="comment-form">
+                            <form action="{% url 'comment_create' post_pk=post.pk %}" method="post" class="comment-form">
                                 {% csrf_token %}
                                 <div class="row">
                                     <div class="col-lg-12 text-center">

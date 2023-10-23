@@ -1,7 +1,7 @@
 from typing import Any
 from django import forms
 from django.core.exceptions import ValidationError
-from ..account.models import Comment
+
 from .models import Contact, Booking 
 import datetime
 
@@ -58,10 +58,3 @@ class BookingRoomForm(forms.ModelForm):
         return super().clean()
 
     
-class CommentForm(forms.ModelForm):
-    class Meta:
-        model = Comment
-        fields = (
-            "text",
-        )
-        

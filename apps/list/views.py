@@ -4,8 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 from .models import Rooms, Booking 
-from .forms import BookingRoomForm , ContactForm ,CommentForm
-
+from .forms import BookingRoomForm , ContactForm 
 import datetime
 
 # from forms import ContactForm
@@ -46,7 +45,7 @@ def room_details(request, room_pk):
             booking.room = room
             booking.save()
             room.save()
-            messages.info(request, "Уомната успешно забронированна! Ждём вашего приезда!")
+            messages.info(request, "Комната успешно забронированна! Ждём вашего приезда!")
             return render(request, "room-details.html", {"room":room, "form": form})
                 
     return render(request, "room-details.html", {"room":room, "form": form})
@@ -95,15 +94,7 @@ def contact(request):
 
 
 
-@login_required
-def write_comments(request):
-    if request.method =="POST":
-        form=CommentForm(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.author=request.user
-            comment.save()
-            return redirect("blog-details")
+
     
 
 

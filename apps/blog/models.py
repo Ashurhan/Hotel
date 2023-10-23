@@ -55,3 +55,13 @@ class PostImages(models.Model):
     def __str__(self):
         return self.post.title
     
+
+class CommentPost(models.Model):
+    author=models.ForeignKey("account.User", related_name="post_commnets", on_delete=models.CASCADE)
+    post=models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comments")
+    text=models.TextField()
+    created_at=models.DateTimeField(auto_now_add=True)
+    parent=models.ForeignKey("self", on_delete=models.CASCADE, related_name="sybcommnets", null=True, blank=True)
+
+
+    
