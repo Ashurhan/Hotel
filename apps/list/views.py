@@ -1,9 +1,11 @@
 from django.shortcuts import render
 from django.shortcuts import  get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+
+
 from django.contrib import messages
 
-from .models import Rooms, Booking 
+from .models import Rooms, Booking, Category
 from .forms import BookingRoomForm , ContactForm 
 import datetime
 
@@ -11,9 +13,12 @@ import datetime
 
 def index(request):
     rooms=Rooms.objects.all()
+    categories=Category.objects.all()
     context={
-        "rooms":rooms
+        "rooms":rooms,
+        "categories": categories
     }
+
      
     return render (request, "index.html", context)
 
@@ -74,19 +79,17 @@ def about_us(request):
     
 
 
-
 def contact(request):
     if request.method == "POST":
         form = ContactForm(request.POST)
         if form.is_valid():
-            # contact=form.save(commit=False)
+            # Both the form and CAPTCHA are valid
             contact = form.save()
-            return redirect('contact')  
+            return redirect('contact_success')  # Redirect to a success page
     else:
-        form = ContactForm()  
+        form = ContactForm()
 
     return render(request, "contact.html", {"form": form})
-
 
 
 

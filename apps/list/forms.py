@@ -1,6 +1,8 @@
 from typing import Any
 from django import forms
+
 from django.core.exceptions import ValidationError
+from captcha.fields import CaptchaField
 
 from .models import Contact, Booking 
 import datetime
@@ -8,9 +10,11 @@ import datetime
 
 
 class ContactForm(forms.ModelForm):
+    captcha = CaptchaField()
+
     class Meta:
-        model= Contact
-        fields=(
+        model = Contact
+        fields = (
             "name",
             "email",
             "message",

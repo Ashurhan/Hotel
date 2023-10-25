@@ -38,8 +38,8 @@
                             <div class="select-option">
                                 <label for="room">Room:</label>
                                 <select id="room" name="room">
-                                    {% for rooms in room.category.all %}
-                                        <option value="{{ rooms.id }}">{{ rooms.category }}</option>
+                                    {% for category in categories %}
+                                        <option value="{{ category.id }}">{{ category.name }}</option>
                                     {% endfor %}
                                 </select>
                             </div>

@@ -74,17 +74,41 @@
                             <h4>{{post.comments.count}} Comments</h4>
                            
 
-                            {% for comment in post.comments.all %}
+                            {% for comment in comments %}
                             <div class="single-comment-item second-comment ">
                                 <div class="sc-author">
-                                    <img src="{{coment.author.avatar.url}}" alt="">
+                                    <img src="{{comment.author.avatar.url}}" alt="">
                                 </div>
                                 <div class="sc-text">
-                                    <span>{{comment.created}}</span>
+                                    <span>{{comment.created_at}}</span>
                                     <h5>{{comment.author}}</h5>
                                     <p>{{comment.text}}</p>
                                     <a href="#" class="comment-btn">Like</a>
-                                    <a href="#" class="comment-btn">Reply</a>
+                                    {% for subcomment in comment.sybcommnets.all %}
+                                        <div class="single-comment-item second-comment ">
+                                        <div class="sc-author">
+                                            <img src="{{subcomment.author.avatar.url}}" alt="">
+                                        </div>
+                                        <div class="sc-text">
+                                            <span>{{subcomment.parent.text}}</span>
+                                            <span>{{subcomment.created_at}}</span>
+                                            <h5>{{subcomment.author}}</h5>
+                                            <p>{{subcomment.text}}</p>
+                                            <a href="#" class="comment-btn">Like</a>
+                                        </div>
+
+                                    {% endfor %}
+                                    <form action="{% url 'answer_comment' comment_id=comment.pk %}" method="post" class="comment-form">
+                                        {% csrf_token %}                                    
+                                        <div class="row">
+                                            <div class="col-lg-12 text-center">
+                                                <textarea placeholder="Answer..." name="text"></textarea>
+                                                <button type="submit" class="site-btn">Answer comment</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    
+                                   
                                 </div>
                             </div>
                             {% endfor %}
@@ -100,6 +124,9 @@
                                         <button type="submit" class="site-btn">Send Message</button>
                                     </div>
                                 </div>
+
+
+
                             </form>
                         </div>
                     </div>

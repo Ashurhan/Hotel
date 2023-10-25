@@ -7,4 +7,11 @@ class CommentForm(forms.ModelForm):
         fields = (
             "text",
         )
-        
+
+
+class AnswerCommentForm(forms.ModelForm):
+    class Meta:
+        model=CommentPost
+        fields=(
+            "text",
+        )

@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'apps.account.apps.AccountConfig',
     'apps.list.apps.ListConfig',
     'apps.blog.apps.BlogConfig',
-
+    'captcha',
     
 ]
 
@@ -133,3 +133,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL='account.User'
+
+
+RECAPTCHA_PRIVATE_KEY = '6LfzQcwoAAAAAJo9_pjVJcMZNGfCal6StP0Y1RfI'
+RECAPTCHA_PUBLIC_KEY = '6LfzQcwoAAAAAI9X--8nTDMm7CLIBdJ01ja_8Pbx'

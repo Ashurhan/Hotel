@@ -3,10 +3,12 @@ from ..account.models import User
 
 
 class Contact(models.Model):
-    name=models.CharField(max_length=50, null=False)
-    email=models.CharField(max_length=100, null=False )
-    message=models.CharField(max_length=1000, null=True)
-    phone=models.CharField("номер телефона",max_length=14, null=False)
+    name = models.CharField(max_length=50, null=False)
+    email = models.CharField(max_length=100, null=False)
+    message = models.CharField(max_length=1000, null=True)
+    phone = models.CharField("номер телефона", max_length=14, null=False)
+
+
 
     
     def __str__(self):

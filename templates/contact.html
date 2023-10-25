@@ -16,19 +16,15 @@
                             <tbody>
                                 <tr>
                                     <td class="c-o">Address:</td>
-                                    <td>856 Cordia Extension Apt. 356, Lake, US</td>
+                                    <td>{{site_contacts.address}}</td>
                                 </tr>
                                 <tr>
                                     <td class="c-o">Phone:</td>
-                                    <td>(12) 345 67890</td>
+                                    <td>{{site_contacts.phone}}</td>
                                 </tr>
                                 <tr>
                                     <td class="c-o">Email:</td>
-                                    <td>info.sona@gmail.com</td>
-                                </tr>
-                                <tr>
-                                    <td class="c-o">Fax:</td>
-                                    <td>+(12) 345 67890</td>
+                                    <td>{{site_contacts.email}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -37,6 +33,7 @@
                 <div class="col-lg-7 offset-lg-1">
                     <form action="{% url 'contact' %}"  method="post"   class="contact-form">
                         {% csrf_token %}
+                        {{ form.captcha }}
                         <div class="row">
                             <div class="col-lg-6">
                                 {{form.name}}
