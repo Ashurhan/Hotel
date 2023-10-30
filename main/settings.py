@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'apps.list.apps.ListConfig',
     'apps.blog.apps.BlogConfig',
     'captcha',
+    'django_filters',
     
 ]
 
@@ -137,3 +138,10 @@ AUTH_USER_MODEL='account.User'
 
 RECAPTCHA_PRIVATE_KEY = '6LfzQcwoAAAAAJo9_pjVJcMZNGfCal6StP0Y1RfI'
 RECAPTCHA_PUBLIC_KEY = '6LfzQcwoAAAAAI9X--8nTDMm7CLIBdJ01ja_8Pbx'
+CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.math_challenge'
+EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST='smtp.gmail.com'
+EMAIL_PORT=587
+EMAIL_USE_TLS=True
+EMAIL_HOST_USER='sonahotel031@gmail.com'
+EMAIL_HOST_PASSWORD='mqso ysbe dxgo sndh'

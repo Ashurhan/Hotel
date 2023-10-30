@@ -34,6 +34,7 @@
                     <form action="{% url 'contact' %}"  method="post"   class="contact-form">
                         {% csrf_token %}
                         {{ form.captcha }}
+                        {{form.captcha.erorrs}}
                         <div class="row">
                             <div class="col-lg-6">
                                 {{form.name}}

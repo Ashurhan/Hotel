@@ -17,51 +17,14 @@
                 </div>
                 <div class="col-xl-4 col-lg-5 offset-xl-2 offset-lg-1">
                     <div class="booking-form">
-                        <h3>Your Reservation</h3>
                         {% if messages %}
                             {% for message in messages %}
                             <h4>{{message}}</h4>
                             {% endfor %}
                         {% endif %}
-                        <form method="post">
-                            {% csrf_token %}
-                            <div class="check-date">
-                                <label for="date-in">Check In:</label>
-                                <input type="text" class="date-input" id="date-in" name="check_in">
-                                <i class="icon_calendar"></i>
-                            </div>
-                            <div class="check-date">
-                                <label for="date-out">Check Out:</label>
-                                <input type="text" class="date-input" id="date-out" name="check_out">
-                                <i class="icon_calendar"></i>
-                            </div>
-                            <div class="select-option">
-                                <label for="room">Room:</label>
-                                <select id="room" name="room">
-                                    {% for category in categories %}
-                                        <option value="{{ category.id }}">{{ category.name }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                            
-                            <div class="select-option">
-                                <label for="guest">Adults:</label>
-                                <select id="guest" name="adult">
-                                    {% for i in "123" %}
-                                    <option value="{{i}}" name="adult">{{i}} Adults</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                            <div class="select-option">
-                                <label for="guest">Children:</label>
-                                <select id="guest" name="children">
-                                    {% for i in "123" %}
-                                    <option value="{{i}}" name="children">{{i}} Children</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                            {{form.check_in.errors}}
-                            <button type="submit">Check Availability</button>
+                        <form method="get" action="{% url 'all_rooms' %}">
+                            {{myFilter.form}}
+                            <button type="submit">Search</button>
                         </form>
                     </div>
                 </div>
@@ -371,16 +334,18 @@ a
                 </div>
             </div>
             <div class="row">
+                {% for post in posts %}
                 <div class="col-lg-4">
-                    <div class="blog-item set-bg" data-setbg="{% static 'img/blog/blog-1.jpg' %}">
+                    <div class="blog-item set-bg" data-setbg="{{post.image.url}}">
                         <div class="bi-text">
-                            <span class="b-tag">Travel Trip</span>
-                            <h4><a href="#">Tremblant In Canada</a></h4>
-                            <div class="b-time"><i class="icon_clock_alt"></i> 15th April, 2019</div>
+                            <span class="b-tag"></span>
+                            <h4><a href="{% url 'blog-details' post_pk=post.pk %}">{% for category in post.category.all %} {{category}} {% endfor %}</a></h4>
+                            <div class="b-time"><i class="icon_clock_alt"></i>{{post.created_at}}</div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4">
+                {% endfor %}
+                <!-- <div class="col-lg-4">
                     <div class="blog-item set-bg" data-setbg="{% static 'img/blog/blog-2.jpg' %}">
                         <div class="bi-text">
                             <span class="b-tag">Camping</span>
@@ -415,7 +380,7 @@ a
                             <div class="b-time"><i class="icon_clock_alt"></i> 12th April, 2019</div>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
        

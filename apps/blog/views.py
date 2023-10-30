@@ -1,4 +1,6 @@
 from django.shortcuts import render , get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
+
 from .models import Post , CommentPost
 from .forms import CommentForm , AnswerCommentForm
 def blog(request):
@@ -9,13 +11,15 @@ def blog(request):
 
     return render(request, "blog.html", context)
 
-
+@login_required
 def blog_details(request,post_pk):
     post=get_object_or_404(Post,pk=post_pk)
     comments = post.comments.filter(parent=None)
 
     return render(request, "blog-details.html",{"post": post, "comments": comments})
 
+
+@login_required
 def write_comments(request,post_pk):
     post = get_object_or_404(Post, pk=post_pk)
 
@@ -28,6 +32,10 @@ def write_comments(request,post_pk):
             comment.save()
             return redirect("blog-details", post_pk=post.pk)
         
+
+
+
+@login_required
 def answer_comment(request, comment_id):
     parent_comment = get_object_or_404(CommentPost, pk=comment_id)
     
@@ -43,4 +51,16 @@ def answer_comment(request, comment_id):
     
     form = AnswerCommentForm()
     return render(request, "blog-details.html", {"form": form, "parent_comment": parent_comment})
+
+
+@login_required
+def delete_comment(request, comment_pk):
+    comment= CommentPost.objects.get(pk=comment_pk)
+    
+    if comment not in request.user.post_commnets.all():
+        return redirect("blog-details", post_pk=comment.post.pk)
+    
+    comment.delete()
+    return redirect(request.META.get('HTTP_REFERER'))
+
 

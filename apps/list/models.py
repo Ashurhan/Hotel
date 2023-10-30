@@ -81,3 +81,18 @@ class Booking(models.Model):
 
     def __str__(self) -> str:
         return f"{self.user} - {self.check_in}:{self.check_out}"
+
+
+class CommentRoom(models.Model):
+    author=models.ForeignKey(User, related_name="room_commnets", on_delete=models.CASCADE)
+    room=models.ForeignKey(Rooms, on_delete=models.CASCADE, related_name="comments")
+    text=models.TextField()
+    created_at=models.DateTimeField(auto_now_add=True)
+    parent=models.ForeignKey("self", on_delete=models.CASCADE, related_name="sybcommnets", null=True, blank=True)
+    rating=models.SmallIntegerField(null=True, blank=True)
+
+    class Meta:
+        verbose_name="Коментария комнаты"
+        verbose_name_plural="Коментария комнаты"
+
+        

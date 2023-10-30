@@ -39,7 +39,7 @@ def logout_view(request):
 
 
 
-from django.shortcuts import render, redirect
+
 
 def update_profile_view(request):
     user = request.user

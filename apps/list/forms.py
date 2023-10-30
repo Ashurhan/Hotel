@@ -4,7 +4,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from captcha.fields import CaptchaField
 
-from .models import Contact, Booking 
+from .models import Contact, Booking , CommentRoom
 import datetime
 
 
@@ -19,6 +19,7 @@ class ContactForm(forms.ModelForm):
             "email",
             "message",
             "phone",
+            "captcha",
         )
         widgets = {
             "name": forms.TextInput(attrs={"placeholder":"Your username"}),
@@ -62,3 +63,17 @@ class BookingRoomForm(forms.ModelForm):
         return super().clean()
 
     
+class RoomCommentForm(forms.ModelForm):
+    class Meta:
+        model=CommentRoom
+        fields=(
+            "text",
+            "rating",
+        )
+
+class AnswerCommentForm(forms.ModelForm):
+    class Meta:
+        model=CommentRoom
+        fields=(
+            "text",
+        )

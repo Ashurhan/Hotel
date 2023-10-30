@@ -45,3 +45,4 @@ class Employees(models.Model):
     full_name=models.CharField(max_length=100,null=False,default=None)
     email=models.CharField(max_length=100,null=False)
     post = models.CharField(max_length=50,null=False,default=None)
+    

@@ -84,57 +84,62 @@
         
                         </div>
                     </div>
-                    <div class="rd-reviews">
-                        <h4>Reviews</h4>
-                        <div class="review-item">
-                            <div class="ri-pic">
-                                <img src="img/room/avatar/avatar-1.jpg" alt="">
-                            </div>
-                            <div class="ri-text">
-                                <span>27 Aug 2019</span>
-                                <div class="rating">
-                                    <i class="icon_star"></i>
-                                    <i class="icon_star"></i>
-                                    <i class="icon_star"></i>
-                                    <i class="icon_star"></i>
-                                    <i class="icon_star-half_alt"></i>
-                                </div>
-                                <h5>Brandon Kelley</h5>
-                                <p>Neque porro qui squam est, qui dolorem ipsum quia dolor sit amet, consectetur,
-                                    adipisci velit, sed quia non numquam eius modi tempora. incidunt ut labore et dolore
-                                    magnam.</p>
-                            </div>
+               
+                    {% for comment in comments %}
+                    <div class="single-comment-item second-comment ">
+                        <div class="sc-author">
+                            <img src="{{comment.author.avatar.url}}" alt="">
                         </div>
-                        <div class="review-item">
-                            <div class="ri-pic">
-                                <img src="img/room/avatar/avatar-2.jpg" alt="">
-                            </div>
-                            <div class="ri-text">
-                                <span>27 Aug 2019</span>
-                                <div class="rating">
-                                    <i class="icon_star"></i>
-                                    <i class="icon_star"></i>
-                                    <i class="icon_star"></i>
-                                    <i class="icon_star"></i>
-                                    <i class="icon_star-half_alt"></i>
+                        <div class="sc-text">
+                            <span>{{comment.created_at}}</span>
+                            <h5>{{comment.author}}</h5>
+                            <p>{{comment.text}}</p>
+                            <a href="#" class="comment-btn">Like</a>
+                            <a class="dropdown-item" href="{% url 'delete_comment' comment_pk=comment.pk %}">
+                                <!-- Download SVG icon from http://tabler-icons.io/i/settings -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                  <path d="M4 7l16 0"></path>
+                                  <path d="M10 11l0 6"></path>
+                                  <path d="M14 11l0 6"></path>
+                                  <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
+                                  <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
+                                </svg>
+                                Удалить комментарий
+                              </a>
+                            {% for subcomment in comment.sybcommnets.all %}
+                                <div class="single-comment-item second-comment ">
+                                <div class="sc-author">
+                                    <img src="{{subcomment.author.avatar.url}}" alt="">
                                 </div>
-                                <h5>Brandon Kelley</h5>
-                                <p>Neque porro qui squam est, qui dolorem ipsum quia dolor sit amet, consectetur,
-                                    adipisci velit, sed quia non numquam eius modi tempora. incidunt ut labore et dolore
-                                    magnam.</p>
-                            </div>
+                                <div class="sc-text">
+                                    <span>{{subcomment.parent.text}}</span>
+                                    <span>{{subcomment.created_at}}</span>
+                                    <h5>{{subcomment.author}}</h5>
+                                    <p>{{subcomment.text}}</p>
+                                    <a href="#" class="comment-btn">Like</a>
+                                </div>
+
+                            {% endfor %}
+                            <form action="{% url 'answer_comment' comment_id=comment.pk %}" method="post" class="comment-form">
+                                {% csrf_token %}                                    
+                                <div class="row">
+                                    <div class="col-lg-12 text-center">
+                                        <textarea placeholder="Answer..." name="text"></textarea>
+                                        <button type="submit" class="site-btn">Answer comment</button>
+                                    </div>
+                                </div>
+                            </form>
+                            
+                           
                         </div>
                     </div>
+                    {% endfor %}
                     <div class="review-add">
                         <h4>Add Review</h4>
-                        <form action="#" class="ra-form">
+                        <form action="{% url 'room_comment' room_pk=room.pk %}" method="post" class="ra-form">
+                            {% csrf_token %}
                             <div class="row">
-                                <div class="col-lg-6">
-                                    <input type="text" placeholder="Name*">
-                                </div>
-                                <div class="col-lg-6">
-                                    <input type="text" placeholder="Email*">
-                                </div>
                                 <div class="col-lg-12">
                                     <div>
                                         <h5>You Rating:</h5>
@@ -146,7 +151,8 @@
                                             <i class="icon_star-half_alt"></i>
                                         </div>
                                     </div>
-                                    <textarea placeholder="Your Review"></textarea>
+                                    <input type="number" name="rating" max="5" min="1">
+                                    <textarea placeholder="Your Review" name="text"></textarea>
                                     <button type="submit">Submit Now</button>
                                 </div>
                             </div>
@@ -191,6 +197,8 @@
                             {{form.check_in.errors}}
                             <button type="submit">Check Availability</button>
                         </form>
+                        price -{{room_price}}
+
                     </div>
                 </div>
             </div>
