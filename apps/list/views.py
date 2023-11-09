@@ -7,12 +7,12 @@ from django.contrib import messages
 from django.core.mail  import send_mail
 from django.conf import settings
 
-from .models import Rooms, Booking, Category ,CommentRoom
+from .models import Rooms, Booking, Category ,CommentRoom ,RestaurantMenu
 from .forms import BookingRoomForm , ContactForm , RoomCommentForm, AnswerCommentForm
 from ..blog.models import Post
 from django.core.paginator import Paginator
-
-import datetime
+from ..account.models import Employees
+from datetime import datetime
 from .filters import RoomsFilter
 
 # from forms import ContactForm
@@ -23,12 +23,11 @@ def index(request):
     posts=Post.objects.all()
 
     myFilter=RoomsFilter(request.GET, queryset=rooms)
-
     context={
         "rooms":rooms,
         "categories": categories,
         "myFilter": myFilter,
-        "posts":posts
+        "posts":posts,
     }
 
      
@@ -40,6 +39,8 @@ def room_details(request, room_pk):
     room=get_object_or_404(Rooms,pk=room_pk)
     comments=room.comments.filter(parent=None)
     form = BookingRoomForm()
+    date=datetime.now()
+    rating = room.rating_room  # Remove the parentheses here
     room_price=0
     if request.method == "POST":    
         form = BookingRoomForm(request.POST)
@@ -67,15 +68,43 @@ def room_details(request, room_pk):
             booking.save()
             room.save()
 
+            text=f"""
+            Congratulations! Your Successful Hotel Room Reservation
 
-            send_mail(subject="room booking", message="succes", from_email=settings.EMAIL_HOST_USER,recipient_list=[request.user.email])
+                Hooray! We are delighted to inform you that your hotel room reservation for [Check-In Date] - [Check-Out Date] has been confirmed. Our warmest congratulations!
+
+                Details of your reservation:
+
+                Guest Name: {booking.user.username}
+                Check-In Date: {booking.check_in}
+                Check-Out Date: {booking.check_out}
+                Room Type: {room.category}
+                Nightly Rate: {room.price}
+                Total price for the booking: {room_price}
+                Number of Adults: {booking.adult}
+                Additional Amenities: {room.services}
+                About your room:
+
+                {room.info}
+                Booking Information:
+
+                Your reservation is confirmed, and we guarantee your room for the specified dates. Please present your booking number at check-in for a quick registration. We recommend keeping this email and booking information in a secure place.
+
+                If you have any questions or need further assistance, don't hesitate to contact our customer support at [Contact Information for Customer Support].
+
+                We look forward to your arrival and hope that your stay at our hotel will be unforgettable and enjoyable. Thank you for choosing our hotel!
+
+                Best Regards,
+                Sona Hotel
+            """
+            send_mail(subject="room booking", message=text, from_email=settings.EMAIL_HOST_USER,recipient_list=[request.user.email])
             
 
 
             messages.info(request, "Комната успешно забронированна! Ждём вашего приезда!")
             return render(request, "room-details.html", {"room":room, "form": form, "room_price":room_price})
                 
-    return render(request, "room-details.html", {"room":room, "form": form,'comments':comments})
+    return render(request, "room-details.html", {"room":room, "form": form,'comments':comments,"date":date, 'rating': rating})
 
 
 @login_required
@@ -122,60 +151,20 @@ def contact(request):
 
 
 
-
-
-    
-
-
-    
-
-
-
 @login_required
-def booking_index(request):
-    room=get_object_or_404(Rooms)
-    form = BookingRoomForm()
-    if request.method == "POST":    
-        form = BookingRoomForm(request.POST)
-        if form.is_valid():        
-            if room.status == "not_available":
-                messages.error(request, "Данная комната на данный момент недоступна для бронирования.")
-                return render(request, "index.html", {"room":room, "form": form})
-            
-            check_in = form.cleaned_data.get("check_in")
-            check_out = form.cleaned_data.get("check_out")
-
-            existing_bookings = Booking.objects.filter(room=room)
-
-            for booking in existing_bookings:
-                if booking.check_out >= check_in and booking.check_in <= check_out:
-                    messages.error(request, "Данная комната уже забронирована в эту дату. Выберите другую.")
-                    return render(request, "index.html", {"room": room, "form": form})
-
-
-            booking = form.save(commit=False)
-            booking.user = request.user
-            booking.room = room
-            booking.save()
-            room.save()
-            messages.info(request, "Уомната успешно забронированна! Ждём вашего приезда!")
-            return render(request, "index.html", {"room":room, "form": form})
-                
-    return render(request, "index.html", {"room":room, "form": form})
-
-
-@login_required
-def room_comment(request,room_pk):
-    room=get_object_or_404(Rooms, pk=room_pk)
-    if request.method=="POST":
-        form=RoomCommentForm(request.POST)
+def room_comment(request, room_pk):
+    room = get_object_or_404(Rooms, pk=room_pk)
+    if request.method == "POST":
+        form = RoomCommentForm(request.POST)
         if form.is_valid():
             comment = form.save(commit=False)
             comment.author = request.user
-            comment.room = room  # Set the post for the comment
+            comment.room = room
             comment.save()
             return redirect("room_details", room_pk=room.pk)
         return render(request, 'room-details.html', {'form': form, 'room': room})
+
+
 
 @login_required    
 def answer_comment(request, comment_id):
@@ -205,4 +194,23 @@ def delete_comment(request, comment_pk):
     comment.delete()
     return redirect(request.META.get('HTTP_REFERER'))
 
+
+
+# def search_rooms(request):
+#     min_price = request.GET.get('min_price')
+#     max_price = request.GET.get('max_price')
+
+#     if min_price and max_price:
+#         rooms = Rooms.filter_by_price_range(min_price, max_price)
+#     else:
+#         rooms = Rooms.objects.all()
+
+#     return render(request, 'base.html', {'rooms': rooms})
+
+
+def employees(request):
+    employees=Employees.objects.all()
+
+
+    return render(request, "employees.html", {"eployees":employees})
 

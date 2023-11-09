@@ -13,7 +13,7 @@ urlpatterns=[
     path("blog-details/<int:post_pk>", blog_details, name="blog-details"),
     path("comment/write/<int:post_pk>", write_comments, name="comment_create"),
     path("answer_comment/<int:comment_id>", answer_comment,name="answer_comment"),
-    path("post/comments/delete/<int:comment_pk>", delete_comment, name="delete_comment"),
+    path("post/comments/delete/<int:comment_pk>", delete_comment, name="delete_comment_blog"),
 
 
 ]

@@ -19,7 +19,7 @@ class Contact(models.Model):
 class Category(models.Model):
     name=models.CharField("назвние", max_length=50)
     class Meta:
-        verbose_name="Категория"
+        verbose_name="Категория "
         verbose_name_plural="категории"
 
     def __str__(self):
@@ -55,6 +55,25 @@ class Rooms(models.Model):
     
     def __str__(self):
         return f" {self.id}-{self.category}"
+
+    
+    @property
+    def rating_room(self):
+        comments = self.comments.all()
+        
+        if comments:
+            rating_sum = sum(comment.rating for comment in comments)
+            total_rating = rating_sum / len(comments)
+            return total_rating
+        else:
+            return 0.0
+
+    @staticmethod
+    def filter_by_price_range(min_price, max_price):
+        return Rooms.objects.filter(price__gte=min_price, price__lte=max_price)
+
+    def __str__(self):
+        return f"Room {self.id} - {self.category}"
     
 
 class RoomIMage(models.Model):
@@ -95,4 +114,40 @@ class CommentRoom(models.Model):
         verbose_name="Коментария комнаты"
         verbose_name_plural="Коментария комнаты"
 
-        
+   
+    
+
+
+
+class RestaurantBook(models.Model):
+    name=models.CharField(max_length=100,null=False,default=None)
+    phone = models.CharField("Номер телефона", max_length=14,null=False)
+    email = models.CharField(max_length=100,null=False)
+    time = models.DateTimeField("Время брони", null=True)
+    persons = models.PositiveSmallIntegerField("Persons",null=True,default=1)
+    message=models.TextField(max_length=2000,null=True)
+
+
+class RestaurantCategory(models.Model):
+    name = models.CharField(max_length=250)
+
+    class Meta:
+        verbose_name = "Категория"
+        verbose_name_plural = "Категории"
+
+    def str(self):
+        return f"{self.name}"
+
+
+class RestaurantMenu(models.Model):
+    name = models.CharField(max_length=100)
+    category = models.ForeignKey(Category,on_delete=models.SET_NULL,related_name="m_category",null=True)
+    price  = models.DecimalField(max_digits=20, decimal_places=2)
+    info = models.TextField("Описание")
+
+
+class RestaurantImage(models.Model):
+    restaurant=models.ForeignKey(RestaurantMenu,related_name="restaurant", null=True, blank=True,on_delete=models.SET_NULL)
+    restaurantimage=models.ImageField(upload_to="media/")
+
+    

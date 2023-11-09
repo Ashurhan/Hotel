@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -42,6 +44,7 @@ INSTALLED_APPS = [
     'apps.blog.apps.BlogConfig',
     'captcha',
     'django_filters',
+    'modeltranslation',
     
 ]
 
@@ -55,7 +58,13 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+
+
+LOCALE_PATHS = [os.path.join(BASE_DIR, 'locale')]
+
 ROOT_URLCONF = 'main.urls'
+
+
 
 TEMPLATES = [
     {
@@ -80,12 +89,17 @@ WSGI_APPLICATION = 'main.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+DATABASES = { 
+    'default': { 
+        'ENGINE': 'django.db.backends.mysql', 
+        'NAME': 'hotel', 
+        'USER': 'hotel_admin', 
+        'PASSWORD': '12345678', 
+        'HOST': '127.0.0.1', 
+        'PORT': '3306', 
+        } 
+    } 
+
 
 
 # Password validation
@@ -119,6 +133,9 @@ USE_I18N = True
 USE_TZ = True
 
 
+
+
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
@@ -145,3 +162,7 @@ EMAIL_PORT=587
 EMAIL_USE_TLS=True
 EMAIL_HOST_USER='sonahotel031@gmail.com'
 EMAIL_HOST_PASSWORD='mqso ysbe dxgo sndh'
+
+
+
+TELEGRAM_BOT_API_KEY='6814444932:AAFj_7ZVqh5CY0m6IxzZTYKYNbT4EZFmT68'
